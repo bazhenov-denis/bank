@@ -1,0 +1,90 @@
+/* Контейнер, центрируем по горизонтали и вертикали */
+.login-box {
+    display: flex;
+    justify-content: center; /* центр по горизонтали */
+    align-items: center;     /* центр по вертикали */
+    width: 100vw;
+    height: 100vh;
+    background-color: #f5f5f5; /* Светлый фон всей страницы */
+}
+
+/* Обёртка формы */
+.page-container-input {
+    background-color: #fff; /* Белый фон формы */
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    /* Минимальная ширина, чтобы форма не сжималась слишком сильно */
+    min-width: 300px;
+}
+
+/* Заголовок по центру, более крупный шрифт */
+.page-container-input h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Общие стили для группы полей */
+.page-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+/* Стили для label */
+.page-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для input */
+.page-form input {
+    max-width: 100%;            /* фиксированная ширина инпута */
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.page-form input:focus {
+    border-color: #3b82f6; /* при фокусе подсвечиваем */
+}
+
+/* Стили для кнопки */
+.page-container-input button {
+    width: 100%;            /* кнопка на всю ширину формы */
+    padding: 10px;
+    background-color: #3b82f6; /* синий фон */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}
+
+.page-container-input button:hover {
+    background-color: #2563eb; /* чуть темнее при ховере */
+}
+
+/* Ссылка под кнопкой */
+.page-container-input p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.page-container-input p a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.page-container-input p a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,25 @@
+[
+  {"name": "Зарплата", "type": "INCOME"},
+  {"name": "Переводы от других лиц", "type": "INCOME"},
+  {"name": "Социальные выплаты", "type": "INCOME"},
+  {"name": "Кэшбэк и бонусы", "type": "INCOME"},
+  {"name": "Доход от инвестиций", "type": "INCOME"},
+  {"name": "Проценты по вкладам", "type": "INCOME"},
+
+  {"name": "Продукты", "type": "EXPENSE"},
+  {"name": "Кафе и рестораны", "type": "EXPENSE"},
+  {"name": "Транспорт", "type": "EXPENSE"},
+  {"name": "Связь и интернет", "type": "EXPENSE"},
+  {"name": "ЖКХ и дом", "type": "EXPENSE"},
+  {"name": "Здоровье и аптеки", "type": "EXPENSE"},
+  {"name": "Одежда и обувь", "type": "EXPENSE"},
+  {"name": "Электроника и техника", "type": "EXPENSE"},
+  {"name": "Автомобиль", "type": "EXPENSE"},
+  {"name": "Развлечения", "type": "EXPENSE"},
+  {"name": "Образование", "type": "EXPENSE"},
+  {"name": "Переводы другим людям", "type": "EXPENSE"},
+  {"name": "Кредиты и долги", "type": "EXPENSE"},
+  {"name": "Путешествия", "type": "EXPENSE"},
+  {"name": "Красота и здоровье", "type": "EXPENSE"},
+  {"name": "Благотворительность", "type": "EXPENSE"}
+]

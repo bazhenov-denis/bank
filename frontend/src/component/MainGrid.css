@@ -1,0 +1,7 @@
+.main-page-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Две равные колонки */
+    width: 100vw; /* Полная ширина экрана */
+    height: 100vh; /* Полная высота экрана */
+    margin: 20px;
+}

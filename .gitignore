@@ -1,0 +1,17 @@
+# Фронтенд: Игнорируем зависимости и сборку
+/frontend/node_modules/
+/frontend/dist/
+
+# Бэкенд: Игнорируем артефакты сборки (Maven/Gradle)
+# Если используете Maven:
+ /backend/target/
+# Если используете Gradle:
+ /backend/build/
+
+# Игнорируем файлы и каталоги IDE для Java (например, IntelliJ IDEA)
+ /backend/.idea/
+ *.iml
+
+# Общие временные файлы и логи
+*.log
+

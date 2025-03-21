@@ -1,0 +1,14 @@
+.history-container {
+    width: 100%;
+    display: flex;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    margin-top: 40px;
+    flex-direction: column;
+}
+
+.history-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
