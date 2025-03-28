@@ -39,24 +39,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        // Создаем аутентификационный токен из данных запроса
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-
-        // Пытаемся аутентифицировать пользователя
         Authentication authentication = authenticationManager.authenticate(authToken);
-
-        // Если аутентификация успешна, устанавливаем контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Приводим principal к вашему кастомному классу
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        // Генерация JWT-токена
         String token = jwtUtils.generateJwtToken(authentication);
         logger.info("{} Пользователь {} успешно аутентифицирован{}", token,  userDetails.getId(), userDetails.getUsername());
-
-        // Создаем объект ответа с токеном и данными пользователя
         JwtResponse jwtResponse = new JwtResponse(token, userDetails.getId(), userDetails.getUsername());
 
         return ResponseEntity.ok(jwtResponse);

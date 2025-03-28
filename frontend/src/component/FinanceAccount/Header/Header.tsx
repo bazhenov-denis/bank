@@ -13,15 +13,6 @@ export const Header = () => {
                 />
                 <h1 className="title">Учёт финансов</h1>
             </div>
-            <button className="user-menu">
-                <p>история</p>
-            </button>
-            <button className="user-menu">
-                <p>история</p>
-            </button>
-            <button className="user-menu">
-                <p>история</p>
-            </button>
         </header>
     )
 }

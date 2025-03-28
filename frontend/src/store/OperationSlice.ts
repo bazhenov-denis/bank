@@ -12,7 +12,7 @@ interface OperationData {
     description: string;
     date: string;
     bankAccount: BankAccount; // Теперь здесь не id, а сам объект
-    categoryId: number;
+    category_id: number;
 }
 
 // Thunk: Создание операции

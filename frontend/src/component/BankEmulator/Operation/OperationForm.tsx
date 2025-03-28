@@ -1,28 +1,34 @@
-// src/components/BankEmulator/Operation/OperationForm.tsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../store/store";
 import { addOperation } from "../../../store/OperationSlice.ts";
 import { fetchAccounts } from "../../../store/AccountSlice.ts";
-import { getAllCategories } from "../../../api/api";
+import { getAllCategories, getLastOperationDate } from "../../../api/api";
 import "./OperationForm.css";
 
 const OperationForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-
     const accounts = useSelector((state: RootState) => state.accounts.accounts);
 
-    const [categories, setCategories] = useState<{ id: number; name: string; type: "INCOME" | "EXPENSE" }[]>([]);
-
+    const [categories, setCategories] = useState<
+        { id: number; name: string; type: "INCOME" | "EXPENSE" }[]
+    >([]);
     const [selectedAccount, setSelectedAccount] = useState<number | "">("");
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
     const [operationType, setOperationType] = useState<"INCOME" | "EXPENSE" | "">("");
     const [amount, setAmount] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
-    // Загружаем категории при рендере
+    // Состояние для хранения даты последней операции, по умолчанию – сегодня
+    const [lastOperationDate, setLastOperationDate] = useState<string>(
+        new Date().toISOString().slice(0, 10)
+    );
+    // Состояние для выбранной даты операции, инициализируется как lastOperationDate
+    const [operationDate, setOperationDate] = useState<string>(lastOperationDate);
+
     useEffect(() => {
-        const fetchCategories = async () => {
+        // Загружаем категории
+        const fetchCategoriesData = async () => {
             try {
                 const data = await getAllCategories();
                 setCategories(data);
@@ -30,7 +36,24 @@ const OperationForm: React.FC = () => {
                 console.error("Ошибка при загрузке категорий:", error);
             }
         };
-        fetchCategories();
+
+        // Загружаем дату последней операции с backend
+        const fetchLastDate = async () => {
+            try {
+                const date = await getLastOperationDate(); // Ожидается формат YYYY-MM-DD
+                console.log(date)
+                setLastOperationDate(date);
+                // Если текущая выбранная дата меньше полученной, обновляем ее
+                if (operationDate < date) {
+                    setOperationDate(date);
+                }
+            } catch (error) {
+                console.error("Ошибка при получении даты последней операции:", error);
+            }
+        };
+
+        fetchCategoriesData();
+        fetchLastDate();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -48,7 +71,6 @@ const OperationForm: React.FC = () => {
         }
 
         const account = accounts.find(acc => acc.id === Number(selectedAccount));
-
         if (!account) {
             alert("Ошибка: не найден счёт");
             return;
@@ -59,21 +81,23 @@ const OperationForm: React.FC = () => {
                 type: operationType as "INCOME" | "EXPENSE",
                 amount: numericAmount,
                 description,
-                date: new Date().toISOString().slice(0, 10),
+                date: operationDate, // Используем выбранную дату
                 bankAccount: account,
-                categoryId: Number(selectedCategory),
+                category_id: Number(selectedCategory),
             })
         );
 
-        // После операции обновляем счета
+        // Обновляем счета после операции
         dispatch(fetchAccounts());
 
-        // Очищаем форму после успешного выполнения
+        // Сбрасываем форму (при необходимости можно оставить дату)
         setSelectedAccount("");
         setSelectedCategory("");
         setOperationType("");
         setAmount("");
         setDescription("");
+        // Если нужно сбрасывать дату, можно вернуть значение lastOperationDate
+        setOperationDate(lastOperationDate);
     };
 
     return (
@@ -82,8 +106,13 @@ const OperationForm: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Счёт:</label>
-                    <select value={selectedAccount} onChange={(e) => setSelectedAccount(Number(e.target.value))}>
-                        <option value="" disabled>Выберите счёт</option>
+                    <select
+                        value={selectedAccount}
+                        onChange={(e) => setSelectedAccount(Number(e.target.value))}
+                    >
+                        <option value="" disabled>
+                            Выберите счёт
+                        </option>
                         {Array.isArray(accounts) ? (
                             accounts.map((account) => (
                                 <option key={account.id} value={account.id}>
@@ -97,8 +126,15 @@ const OperationForm: React.FC = () => {
                 </div>
                 <div className="form-group">
                     <label>Тип операции:</label>
-                    <select value={operationType} onChange={(e) => setOperationType(e.target.value as "INCOME" | "EXPENSE" | "")}>
-                        <option value="" disabled>Выберите тип операции</option>
+                    <select
+                        value={operationType}
+                        onChange={(e) =>
+                            setOperationType(e.target.value as "INCOME" | "EXPENSE" | "")
+                        }
+                    >
+                        <option value="" disabled>
+                            Выберите тип операции
+                        </option>
                         <option value="INCOME">Пополнение</option>
                         <option value="EXPENSE">Трата</option>
                     </select>
@@ -106,8 +142,13 @@ const OperationForm: React.FC = () => {
                 {operationType && (
                     <div className="form-group">
                         <label>Категория:</label>
-                        <select value={selectedCategory} onChange={(e) => setSelectedCategory(Number(e.target.value))}>
-                            <option value="" disabled>Выберите категорию</option>
+                        <select
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+                        >
+                            <option value="" disabled>
+                                Выберите категорию
+                            </option>
                             {categories
                                 .filter((cat) => cat.type === operationType)
                                 .map((cat) => (
@@ -129,7 +170,21 @@ const OperationForm: React.FC = () => {
                 </div>
                 <div className="form-group">
                     <label>Описание:</label>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <input
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Дата операции:</label>
+                    <input
+                        type="date"
+                        value={operationDate}
+                        onChange={(e) => setOperationDate(e.target.value)}
+                        // Ограничиваем выбор: пользователь не сможет выбрать дату раньше последней операции
+                        min={lastOperationDate}
+                    />
                 </div>
                 <button type="submit">Совершить операцию</button>
             </form>

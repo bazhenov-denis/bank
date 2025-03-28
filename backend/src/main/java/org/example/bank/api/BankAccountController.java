@@ -23,31 +23,13 @@ public class BankAccountController {
         this.userService = userService;
     }
 
-/*
-    @GetMapping
-    public ResponseEntity<List<BankAccount>> getAllAccounts() {
-        List<BankAccount> accounts = financialFacade.getAllAccounts();
-        if (accounts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(accounts);
-    }
-*/
-
 
     @GetMapping("/{id}")
     public ResponseEntity<BankAccount> getAccountById(@PathVariable Long id) {
         BankAccount account = financialFacade.getAccountById(id);
         return ResponseEntity.ok(account);
     }
-/*
 
-    @PostMapping
-    public ResponseEntity<BankAccount> createAccount(@RequestBody BankAccount bankAccount) {
-        BankAccount created = financialFacade.createAccount(bankAccount);
-        return ResponseEntity.ok(created);
-    }
-*/
 
     @PutMapping("/{id}")
     public ResponseEntity<BankAccount> updateAccount(@PathVariable Long id, @RequestBody BankAccount bankAccount) {
@@ -67,7 +49,6 @@ public class BankAccountController {
     public ResponseEntity<List<BankAccount>> getUserAccounts(Authentication authentication) {
         String username = authentication.getName();
         var user = userService.findByUsername(username);
-        // Метод в FinancialFacade, который возвращает счета по userId
         List<BankAccount> accounts = financialFacade.getAccountsByUserId(user.getId());
         if (accounts.isEmpty()) {
             return ResponseEntity.noContent().build();

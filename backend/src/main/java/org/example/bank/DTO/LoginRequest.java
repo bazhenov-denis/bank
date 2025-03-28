@@ -5,6 +5,9 @@ public class LoginRequest {
     private String username;
     private String password;
 
+    public LoginRequest(String testuser, String password123) {
+    }
+
     // Геттеры и сеттеры
     public String getUsername() {
         return username;

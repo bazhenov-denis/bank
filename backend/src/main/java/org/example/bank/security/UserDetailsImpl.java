@@ -15,6 +15,7 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
+
     // Можно добавить дополнительные методы для доступа к данным пользователя, если нужно.
     public User getUser() {
         return user;

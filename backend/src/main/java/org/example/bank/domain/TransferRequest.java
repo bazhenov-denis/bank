@@ -5,6 +5,13 @@ public class TransferRequest {
     private Long toAccountId;
     private double amount;
 
+    public TransferRequest(long l, long l1, double v) {
+    }
+
+    public TransferRequest() {
+
+    }
+
     // Геттеры и сеттеры
     public Long getFromAccountId() {
         return fromAccountId;

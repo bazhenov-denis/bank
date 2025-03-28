@@ -1,14 +1,101 @@
+/* Общий контейнер для истории */
 .history-container {
     width: 100%;
     display: flex;
+    flex-direction: column;
     background-color: #f8f8f8;
     border-radius: 12px;
     margin-top: 40px;
-    flex-direction: column;
+    padding: 20px; /* добавляем внутренние отступы */
+    box-sizing: border-box;
 }
 
+/* Заголовок (если хотите использовать отдельный класс под заголовок) */
 .history-header {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Кнопка "Открыть историю" */
+.transfer-button {
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.transfer-button:hover {
+    background-color: #5a54d6;
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* чтобы окно было поверх всего */
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Блок, в котором выводится таблица с операциями */
+.history-operation {
+    margin-top: 20px;
+    max-height: 400px; /* при необходимости ограничиваем высоту */
+    overflow-y: auto;  /* и добавляем прокрутку */
+}
+
+/* Таблица */
+.history-operation table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+/* Шапка таблицы */
+.history-operation th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Ячейки таблицы */
+.history-operation td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Пример небольшого hover-эффекта */
+.history-operation tr:hover {
+    background-color: #f9f9f9;
 }

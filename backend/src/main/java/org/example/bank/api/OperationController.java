@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/operations")
@@ -25,13 +28,6 @@ public class OperationController {
         this.userRepository = userRepository;
     }
 
-
-    @GetMapping
-    public ResponseEntity<List<Operation>> getAllOperations() {
-        List<Operation> operations = financialFacade.getAllOperations();
-        return ResponseEntity.ok(operations);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Operation> getOperationById(@PathVariable Long id) {
         Operation operation = financialFacade.getOperationById(id);
@@ -40,14 +36,9 @@ public class OperationController {
 
     @PostMapping
     public ResponseEntity<Operation> createOperation(@RequestBody Operation operation, Authentication authentication) {
-        // Получаем имя текущего пользователя из объекта аутентификации
         String username = authentication.getName();
-        // Ищем пользователя в БД
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Пользователь не найден"));;
-        // Устанавливаем пользователя в операцию
         operation.setUser(user);
-
-        // Создаем операцию через фасад
         Operation created = financialFacade.createOperation(operation);
         return ResponseEntity.ok(created);
     }
@@ -72,11 +63,36 @@ public class OperationController {
                 transferRequest.getToAccountId(),
                 transferRequest.getAmount()
         );
-
         if (success) {
             return ResponseEntity.ok("Перевод выполнен успешно.");
         } else {
             return ResponseEntity.badRequest().body("Ошибка при переводе средств.");
         }
+    }
+
+
+    @GetMapping("/last-operation-date")
+    public ResponseEntity<Map<String, String>> getLastOperationDate() {
+        Operation lastOperation = financialFacade.getLastOperation();
+
+        String lastDate;
+        if (lastOperation == null || lastOperation.getDate() == null) {
+            lastDate = LocalDate.now().toString();
+        } else {
+            lastDate = lastOperation.getDate().toString();
+        }
+        return ResponseEntity.ok(Collections.singletonMap("date", lastDate));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<Operation>> getUserOperations(Authentication authentication) {
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        List<Operation> operations = financialFacade.getOperationsByUserId(user.getId());
+        if (operations.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(operations);
     }
 }

@@ -10,11 +10,6 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-
-    // Эти значения лучше вынести в application.properties
-/*
-    private final String jwtSecret = "yourSecretKey";
-*/
     Key jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     private final int jwtExpirationMs = 86400000; // 24 часа
@@ -34,7 +29,6 @@ public class JwtUtils {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (JwtException e) {
-            // Можно добавить логирование ошибки
         }
         return false;
     }

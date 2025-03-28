@@ -19,8 +19,6 @@ public class CategoryController {
         this.financialFacade = financialFacade;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = financialFacade.getAllCategories();

@@ -45,7 +45,7 @@ public class Operation {
     // Аннотация @JoinColumn(name = "category_id") указывает имя столбца внешнего ключа.
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category category_id;
 
     // Конструктор по умолчанию обязателен для работы JPA.
     public Operation() {
@@ -58,7 +58,7 @@ public class Operation {
         this.amount = amount;
         this.date = date;
         this.description = description;
-        this.category = category;
+        this.category_id = category;
     }
 
     // Геттеры и сеттеры для доступа к приватным полям класса.
@@ -95,7 +95,7 @@ public class Operation {
 
     // Геттер для категории.
     public Category getCategory() {
-        return category;
+        return category_id;
     }
 
     // Сеттер для id.
@@ -130,7 +130,7 @@ public class Operation {
 
     // Сеттер для категории.
     public void setCategory(Category category) {
-        this.category = category;
+        this.category_id = category;
     }
 
     public User getUser() {

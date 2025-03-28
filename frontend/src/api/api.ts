@@ -56,6 +56,7 @@ export const getAllCategories = async () => {
 
 export const createOperation = async (operationData: any) => {
     const token = localStorage.getItem("token");
+    console.log(operationData)
     const response = await fetch("http://localhost:8080/api/operations", {
         method: "POST",
         headers: {
@@ -70,9 +71,9 @@ export const createOperation = async (operationData: any) => {
     return response.json();
 };
 
-export const getAccountById = async (id: number): Promise<BankAccount> => {
-    const response = await apiClient.get<BankAccount>(`/accounts/${id}`);
-    return response.data;
+export const getLastOperationDate = async (): Promise<string> => {
+    const response = await apiClient.get<{ date: string }>('/operations/last-operation-date');
+    return response.data.date;
 };
 
 export const createAccount = async (account: Partial<BankAccount>): Promise<BankAccount> => {
@@ -80,14 +81,15 @@ export const createAccount = async (account: Partial<BankAccount>): Promise<Bank
     return response.data;
 };
 
-export const updateAccount = async (id: number, account: BankAccount): Promise<BankAccount> => {
-    const response = await apiClient.put<BankAccount>(`/accounts/${id}`, account);
-    return response.data;
-};
-
 export const deleteAccount = async (id: number): Promise<void> => {
     await apiClient.delete(`/accounts/${id}`);
 };
+
+export const getUserOperations = async () => {
+    const response = await apiClient.get("/operations/user");
+    return response.data;
+};
+
 
 export const transfer = async (transferData: { fromAccountId: number; toAccountId: number; amount: number }) => {
     const token = localStorage.getItem("token");
@@ -109,6 +111,10 @@ export const transfer = async (transferData: { fromAccountId: number; toAccountI
     }
 
     return response.json();
+
+
 };
+
+
 
 export default api;
